@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id            Int    @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  password      String
+  avatarUrl     String?   
+
+  token         String?
+
+  videos        Video[]   
+  comments      Comment[] 
+  likes         Like[]    
+  subscriptions Subscription[] @relation("Subscriber")
+  subscribers   Subscription[] @relation("SubscribedTo")
+  history       History[] 
+
+  createdAt     DateTime  @default(now())
+}
+
+model Category {
+  id    String  @id @default(uuid())
+  name  String  
+  videos Video[]
+}
+
+model Video {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String?
+  url         String
+  thumbnail   String   //Превью
+  views       Int       @default(0)
+  user        User?      @relation(fields: [userId], references: [id])
+  userId      Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+
+  comment Comment[]
+  likes   Like[]
+  history History[]
+  
+  @@index([categoryId]) // Индекс для быстрого поиска по категории
+  @@index([title])
+  @@index([createdAt])
+  @@index([views])
+
+  createdAt   DateTime  @default(now())
+}
+
+model Comment {
+  id       Int    @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   Int
+}
+
+model Like {
+  id       Int    @id @default(autoincrement())
+  type      LikeType
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  video     Video   @relation(fields: [videoId], references: [id])
+  videoId   Int
+}
+
+enum LikeType {
+  LIKE
+  DISLIKE
+}
+
+model Subscription {
+  id              Int    @id @default(autoincrement())
+  subscriber      User   @relation("Subscriber", fields: [subscriberId], references: [id])
+  subscriberId    Int
+  subscribedTo    User   @relation("SubscribedTo", fields: [subscribedToId], references: [id])
+  subscribedToId  Int
+  createdAt       DateTime @default(now())
+}
+
+model History {
+  id        Int    @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   Int
+  watchedAt DateTime @default(now())
+}
