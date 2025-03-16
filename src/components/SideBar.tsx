@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/src/lib/utils";
-import { History, HomeIcon, Menu, ThumbsUp, User, Video } from "lucide-react";
+import { ArrowRight, History, HomeIcon, Menu, ThumbsUp, User, Video } from "lucide-react";
 
 interface Props {
   id?:number;
@@ -24,15 +24,18 @@ const SideBar: React.FC<Props> = ({id, isOpen, toggleSideBar }) => {
           isOpen ? "w-54" : "w-18"
         )}
       >
-        <div className="mt-4">
+        <div className="mt-4 border-b">
+          <div className="border-b">
           <Link href="/" className="flex items-center gap-4 p-2 hover:bg-gray-300 rounded-md transition">
             <HomeIcon size={27} />
             {isOpen && <p>Главная</p>}
           </Link>
+          </div>
 
           <Link href="/user" className="flex items-center gap-4 p-2 hover:bg-gray-300 rounded-md transition">
             <User size={27} />
-            {isOpen && <p>Вы</p>}
+            {isOpen && <p>Вы </p>}
+            {isOpen && <ArrowRight  size={17}/>}
           </Link>
 
           <Link href="/history" className="flex items-center gap-4 p-2 hover:bg-gray-300 rounded-md transition">

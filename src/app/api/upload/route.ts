@@ -17,11 +17,11 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('file') as File || null;
     const title = formData.get('title') as string || null;
-    const thumbnail = formData.get('thumbnail') as File || null
+    const thumbnail = formData.get('thumbnail') as File || null;
+    const categoryId = formData.get('categoryId') as string || null;
+    const description = formData.get('description') as string || null;
 
-
-
-    if (!file || !title || !thumbnail) {
+    if (!file || !title || !thumbnail ||!categoryId) {
       return NextResponse.json({ message: 'Заполните все данные' }, { status: 400 });
     }
 
@@ -75,6 +75,8 @@ export async function POST(req: NextRequest) {
         url: `/uploads/${fileName}`,
         thumbnail: `/thumbnail/${fileThumbnailName}`,
         userId: user?.id,
+        categoryId: Number(categoryId),
+        description
       }
     })
 

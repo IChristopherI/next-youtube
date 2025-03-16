@@ -18,8 +18,6 @@ const CommentForm: React.FC<Props> = ({ videoId, className }) => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-      
-
         setLoading(true);
         try {
             await axios.post(`/api/comment/${videoId}`, { text: value });

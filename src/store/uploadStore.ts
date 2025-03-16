@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { addLikeItem, deleteItemUser, updateViewsUser } from "../services/item";
+import { addLikeItem, deleteItemUser, getCategories, updateViewsUser } from "../services/item";
+import { Category } from "@prisma/client";
 
 export interface UploadStore {
   loading: boolean;
@@ -7,11 +8,17 @@ export interface UploadStore {
   fetchLikeItem: (videoId: number, userId: number) => void;
   removeItem: (id: number) => void;
   updateViewsItem: (id: number) => void;
+
+
+  categories: Category[];
+  fetchCategores:() => void
 }
 
 export const useUploadStore = create<UploadStore>((set) => ({
   loading: false,
   error: false,
+  categories: [],
+
 
   fetchLikeItem: async (videoId: number, userId: number) => {
     try {
@@ -42,6 +49,17 @@ export const useUploadStore = create<UploadStore>((set) => ({
       await updateViewsUser(id);
     } catch (error) {
       console.error("Ошибка обновления просмотров:", error);
+      set({ error: true });
+    }
+  },
+
+
+  fetchCategores: async () => {
+    try {
+      const data = await getCategories();
+      set({ categories: data });
+    } catch (error) {
+      console.error("Ошибка получения категорий:", error);
       set({ error: true });
     }
   },

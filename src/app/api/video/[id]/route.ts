@@ -1,18 +1,18 @@
 import { prisma } from "@/prisma/prisma-client";
 import { NextResponse } from "next/server";
 
-export async function PATCH( { params }: { params: { id: string } }) {
+
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const id = Number(params.id);
         console.log("Обновление просмотров для видео ID:", id);
 
-        if (!id) {
-            return NextResponse.json({ message: "ID видео не найдено" }, { status: 400 });
+        if (isNaN(id)) {
+            return NextResponse.json({ message: "Некорректный ID видео" }, { status: 400 });
         }
 
-        // Проверяем, существует ли видео
-        const videoExists = await prisma.video.findFirst({
-            where: { id: id }
+        const videoExists = await prisma.video.findUnique({
+            where: { id }
         });
 
         if (!videoExists) {
@@ -20,7 +20,7 @@ export async function PATCH( { params }: { params: { id: string } }) {
         }
 
         const videoUpdate = await prisma.video.update({
-            where: { id: id },
+            where: { id },
             data: { views: { increment: 1 } },
             include: { user: true }
         });

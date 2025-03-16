@@ -35,23 +35,31 @@ async function main() {
 
   await prisma.category.createMany({
     data: [
-      { name: "Музыка" },
-      { name: "Видеоигры" },
-      { name: "Обучение" },
-      { name: "Фильмы" },
+      { id: 1, name: "Музыка" },
+      { id: 2, name: "Видеоигры" },
+      { id: 3, name: "Обучение" },
+      { id: 4, name: "Фильмы" },
     ],
   })
 
   await prisma.video.createMany({
     data: [
       {
-        id:1,
+        id: 1,
         userId: 1,
         title: 'Naruto - Opening 3',
-        url: '/uploads/Naruto.mp4',
-        thumbnail: '/thumbnail/NarutoPreview.jpg'
-      }
-
+        url: '/uploads/Naruto - Opening 3fps.mp4',
+        thumbnail: '/thumbnail/Naruto - Opening 3.jpg',
+        categoryId:1,
+      },
+      {
+        id: 2,
+        userId: 1,
+        title: 'Naruto - Opening 3',
+        url: '/uploads/breathe.mp4',
+        thumbnail: '/thumbnail/breathe.jpg',
+        categoryId:2,
+      },
     ]
   })
 

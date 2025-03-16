@@ -6,10 +6,6 @@ export async function GET(req: NextRequest) {
     try {
         const token = req.cookies.get("cartToken")?.value;
 
-        if (!token) {
-            return NextResponse.json({ message: "Не авторизован" }, { status: 401 });
-        }
-
         const user = await prisma.user.findFirst({
             where: { token },
         });

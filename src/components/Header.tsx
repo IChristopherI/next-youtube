@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Home, Search, LogIn } from 'lucide-react';
+import { Upload, Home, Search, LogIn, User } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/ui/button';
 
@@ -13,8 +13,8 @@ const Header: React.FC = () => {
                     <input type="text" placeholder="Введите запрос" className="w-full pl-10 pr-4 py-2 border rounded-md" />
                 </div>
                 <div className="flex items-center gap-4">
-                    <Link href={`/upload`}><Upload className="w-6 h-6" /></Link>
-                   <Button> Войти<LogIn className="w-6 h-6"></LogIn></Button>
+                    <Link href={`/upload`}><Upload className="w-5 h-5" /></Link>
+                   <Button><User /> Войти</Button>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
                     <span className="text-xs">Загрузить</span>
                 </Link>
                 <Link href={`/login`} className="flex flex-col items-center">
-                    <LogIn className="w-7 h-7" />
+                    <User className="w-7 h-7" />
                     <span className="text-xs">Войти</span>
                 </Link>
             </div>
